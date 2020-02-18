@@ -24,3 +24,7 @@
 .align-toggle {
     margin-left: 80px;
 }
+
+.floating.open {
+    display: none;
+}

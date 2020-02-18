@@ -30,7 +30,6 @@ export default class Categories extends Component {
         axios.get('https://maspu-app.herokuapp.com/products').then(response => {
             if (response) {
                 const products = response.data;
-                console.log(products);
                 this.setState({ products });
             }
         });
@@ -57,27 +56,33 @@ export default class Categories extends Component {
                         totalValue: product.price * quantity,
                     },
                 },
+                totalValue: prevState.totalValue + product.price,
             };
-            this.calculateTotalValue(newState.selectedProducts);
             return newState;
         });
     };
 
-    calculateTotalValue(selectedProducts) {
-        let totalValue = 0;
-        Object.keys(selectedProducts).forEach(key => {
-            totalValue += selectedProducts[key].totalValue;
+    deselectProduct = ({ quantity, product }) => {
+        this.setState(prevState => {
+            const newState = {
+                deselectProduct: {
+                    ...prevState.deselectProduct,
+                    [product._id]: {
+                        product,
+                        quantity,
+                        totalValue: product.price * quantity,
+                    },
+                },
+                totalValue: prevState.totalValue - product.price,
+            };
+            return newState;
         });
-        this.setState({ ...this.state, totalValue: totalValue });
-        console.log(totalValue);
-    }
+    };
 
     render() {
         return (
             <div style={{ position: 'relative' }}>
-                <FloatingBar
-                    status={this.state.FloatingBar.status ? 'open' : ''}
-                />
+                <FloatingBar totalValue={this.state.totalValue} />
                 <Container className="container-product">
                     <Accordion defaultActiveKey="0">
                         <Accordion.Toggle
@@ -114,6 +119,14 @@ export default class Categories extends Component {
                                                                 quantity,
                                                                 product,
                                                             })
+                                                        }
+                                                        deselectProduct={quantity =>
+                                                            this.deselectProduct(
+                                                                {
+                                                                    quantity,
+                                                                    product,
+                                                                }
+                                                            )
                                                         }
                                                     />
                                                 </Card.Body>
@@ -161,6 +174,14 @@ export default class Categories extends Component {
                                                                 quantity,
                                                                 product,
                                                             })
+                                                        }
+                                                        deselectProduct={quantity =>
+                                                            this.deselectProduct(
+                                                                {
+                                                                    quantity,
+                                                                    product,
+                                                                }
+                                                            )
                                                         }
                                                     />
                                                 </Card.Body>

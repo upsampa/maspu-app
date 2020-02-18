@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { Toast } from 'react-bootstrap';
+import './Categories.css';
 
 export default class FloatingBar extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            totalValue: 0,
-        };
+        this.state = {};
     }
 
     render() {
         return (
             <div
+                className={`floating ${
+                    this.props.totalValue == 0 ? 'floating open ' : ''
+                }`}
                 aria-live="polite"
                 aria-atomic="true"
                 style={{
@@ -20,6 +22,7 @@ export default class FloatingBar extends Component {
                     zIndex: 2,
                     bottom: '-25%',
                     right: '39%',
+                    pointerEvents: 'none',
                 }}
             >
                 <Toast
@@ -42,7 +45,7 @@ export default class FloatingBar extends Component {
                             Total da Compra:
                         </strong>
                     </Toast>
-                    <Toast.Body>R$ 5,15</Toast.Body>
+                    <Toast.Body>R$ {this.props.totalValue},00</Toast.Body>
                 </Toast>
             </div>
         );

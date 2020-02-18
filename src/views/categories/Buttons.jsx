@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Row } from 'react-bootstrap';
 import './Categories.css';
-import { ThemeConsumer } from 'styled-components';
 
 export default class Buttons extends Component {
     constructor(props) {
@@ -25,7 +24,7 @@ export default class Buttons extends Component {
                 const newState = {
                     counter: this.state.counter - 1,
                 };
-                this.props.selectProduct(newState.counter);
+                this.props.deselectProduct(newState.counter);
                 return newState;
             });
     };
